@@ -52,7 +52,7 @@
 (defun g (ti x)
   (+ (* 0.9999999 (cos ti)) (- (sin (aref x 0))) (- (* 0.1 (aref x 1)))))
 
-;; リストをstreamにＡｅｓｔｈｅｔｉｃ出力(!)
+;; リストの要素を整形してstreamに出力
 (defun output-to (stream list)
   (loop for r in list
      do (format stream "~&~{~^~,16f ~}" r)))
@@ -65,3 +65,10 @@
     (output-to stream (loop for n from 0
                     for (ti x y) in diff
                     collect (list ti x y)))))
+
+;;;
+;;; d^2x/dt^2 = -ky -sin(x) -Bcos(t) : k = 0.1
+;;; ->
+;;; dx/dt = f(t,x,y) = y
+;;; dy/dt = g(t,x,y) = -ky -sin(x) -Bcos(t)
+;;;
