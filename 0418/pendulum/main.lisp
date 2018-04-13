@@ -4,16 +4,12 @@
 ;; 出力
 (defun main ()
   (loop
-     (let ((f-vector (make-array 2 :initial-contents '(f g)))
-           (x-vector (make-array 2 :initial-contents '(0 1)))
-           (input nil))
+     (let ((input nil))
        (setf input (read-char))
        (if (equal input #\e) (return 0))
-                                        ;       (setf (aref x-vector 0) 0
-                                        ;             (aref x-vector 1) 1)
        (with-open-file (stream "~/work/lab/0418/pendulum/output" :direction :output :if-exists :supersede)
          (loop for r in (loop for n from 0
-                           for (ti x y) in (runge-kutta f-vector x-vector 0 100 10000)
+                           for (ti x y) in (runge-kutta '(f g) '(0 1) 0 100 10000)
                            collect (list ti x y))
             do (format stream "~&~{~^~,16f ~}" r)))
        (format t "~,16f~&" *B*)

@@ -1,12 +1,14 @@
 ;;;
 ;;; RK4 method
-;;; function : (runge-kutta vector:関数 vector:初期値 t_0:開始時刻 t_n:終了時刻 div:区間分割数(ループ回数))
+;;; function : (runge-kutta f-list:関数 x-list:初期値 t_0:開始時刻 t_n:終了時刻 div:区間分割数(ループ回数))
 ;;; return   : 区間計算値のリスト
 ;;;
-(defun runge-kutta (f x t0 tn div)
-  (let* ((n (array-dimension f 0))  ; n階微分方程式
+(defun runge-kutta (f-list x-list t0 tn div)
+  (let* ((n (length f-list))  ; n階微分方程式
          (h (float (/ (- tn t0) div) 1d0))  ; 分割区間長h
          (ti t0)
+         (f (make-array n :initial-contents f-list))
+         (x (make-array n :initial-contents x-list))
          (k (make-array (list 4 n) :element-type 'double-float  ; 行列k(vector-fの要素数 * rk法次数4)
                         :initial-element 1d0))
          (temp (make-array n :element-type 'double-float  ; バッファ
