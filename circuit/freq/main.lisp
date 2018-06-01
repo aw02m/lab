@@ -4,14 +4,17 @@
         (loops 12800))
 ;    (with-open-file (stream1 "./output1" :direction :output :if-exists :supersede)
       (with-open-file (stream2 "./output2" :direction :output :if-exists :supersede)
-        (loop for l from 0 to 1000 do
+        (loop for l from 0 to 10000 do
              (let* ((n 2)  ; n階微分方程式
                     (h (float (* 2 (/ PI div)) 1d0))  ; 分割区間長h
                     (ti 0)
                     (f (make-array n :initial-contents (list (lambda (ti x)
                                                                (+ (* 0 ti) (aref x 1)))
                                                              (lambda (ti x)
-                                                               (+ (* b (cos ti)) (- (sin (aref x 0))) (- (* 0.1 (aref x 1))))))))
+                                                               (+ (- (* 0.1 (aref x 1)))
+                                                                  (- (aref x 0))
+                                                                  (- (* (aref x 0) (aref x 0) (aref x 0)))
+                                                                  (* b (cos ti)))))))
                     (x (make-array n :initial-contents (list 0 1)))  ;初期値
                     (k (make-array (list 4 n) :element-type 'double-float  ; 行列k(vector-fの要素数 * rk法次数4)
                                    :initial-element 1d0))
@@ -52,7 +55,7 @@
                     (setf ti (* (mod i div) h))
                   ;; ファイルへ出力
                                         ;(format stream1 "~&~{~^~,16f ~}" (append `(,b ,ti) (coerce x 'list)))
-                    (if (> i (* loops 0.8))
+                    (if (> i (* loops 0.5))
                         (if (equal (mod i div) 0)
                             (format stream2 "~&~{~^~,16f ~}" (append `(,b ,ti) (coerce x 'list)))))))
            ;; 初期値更新 

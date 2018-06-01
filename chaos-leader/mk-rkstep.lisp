@@ -47,4 +47,4 @@
                                   6))))
       (setf ti (+ ti h))
       ;; return values
-      `((,(aref prex 0) ,(aref prex 1)) (,(aref x 0) ,(aref x 1))))))
+      `(,(aref x 0) ,(aref x 1)))))
